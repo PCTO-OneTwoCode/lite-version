@@ -1,0 +1,75 @@
+import random
+#l[0]is the result. l[1][0] and l[1][1] are the addends. l[2] is the sign (as char)
+#l[result,[firstAddend,secondAddend],sign]
+def createMultiplication(l):
+    l[1][0] = random.randint(1,10)
+    l[1][1] = random.randint(1,10) 
+    l[0] = l[1][0] * l[1][1]
+    l[2] = "*" 
+    return l
+def createDivision(l):
+    l[0] = random.randint(1,10)
+    l[1][1] = random.randint(1,10)
+    l[1][0] = l[0] * l[1][1]
+    l[2] = "/"
+    return l
+def createAddition(l):
+    l[0] = random.randint(50,100)
+    l[1][0] = random.randint(20,50)
+    l[1][1] = l[0] - l[1][0]
+    l[2] = "+"
+    return l
+
+def createSubtracion(l):
+    
+    l[0] = random.randint(0,40)
+    l[1][0] = random.randint(40,100)
+    l[1][1] = l[1][0] - l[0]
+    l[2] = "-"
+    return l
+    
+def createOperations():
+    chose = random.randint(0,3)
+    temp = [0,[0,0]," "]
+    if chose == 0:
+        return createMultiplication(temp)
+    elif chose == 1:
+        return createDivision(temp)   
+    elif chose == 2:
+        return createAddition(temp)
+    return createSubtracion(temp)
+          
+    
+def createStringOperationWithSolution():
+    operation = createOpearions()
+    return (f"{operation[1][0]} {operation[2]} {operation[1][1]} = {operation[0]}")  
+
+
+    
+def createStringOperationWithoutSolution():
+    operation = createOpearions()
+    return (f"{operation[1][0]} {operation[2]} {operation[1][1]} = ...")  
+
+
+BROWN = (150,75,0)
+
+def printf(text, x=0, y=0, font='freesansbold.ttf', size = 115):
+    largeText = pygame.font.Font(font, size)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = ((x,y))
+    screen.blit(TextSurf, TextRect)
+
+class Operation():
+
+    def __init__(self, x, y, width = 200, height = 50):
+        self.x = x
+        self.y = y
+        rect = pygame.Rect(x,y,width,height)
+        pygame.draw.rect(screen,BROWN, rect)
+        self.text = createStringOperationWithoutSolution()
+    
+    def update(self, x, y):
+        pygame.draw.rect(screen,BROWN, rect)
+        printf(self.text, x=self.x, y=self.y, 150)
+        if self.rect.collidepoint(x, y):
+            return True
